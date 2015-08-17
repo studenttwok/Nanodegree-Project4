@@ -17,3 +17,23 @@ allprojects {
         jcenter()
     }
 }
+
+task startAppengine (dependsOn: [":jokeendpoint:appengineRun"]) {
+    project(":jokeendpoint").afterEvaluate {
+        jokeendpoint -> jokeendpoint.extensions.appengine.daemon = true
+            //tasks.getByPath(":jokeendpoint:test")
+            //tasks.getByPath(":jokeendpoint:appengineStop")
+    }
+    doLast {
+        //do whatever you need to here
+        //tasks.getByPath(":jokeendpoint:test")
+        //tasks.getByPath(":jokeendpoint:appengineStop")
+        print "AppEngine Started"
+    }
+}
+
+task doTest(dependsOn: ["startAppengine", ":app:connectedAndroidTest", ":jokeendpoint:appengineStop"]) {
+    doLast{
+        print "All Job Done again!"
+    }
+}
